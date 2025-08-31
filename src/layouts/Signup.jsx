@@ -90,7 +90,6 @@ export default function Signup() {
     signInWithPopup(auth, provider)
       .then(async (result) => {
         const idToken = await result.user.getIdToken();
-        console.log("Firebase ID Token:", idToken);
         const res = await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/auth/firebase-login`, { idToken }, { withCredentials: true });
 
         setAccessToken(res.data?.accessToken || '');
