@@ -1,9 +1,6 @@
 import './App.css';
-import { lazy, Suspense, useRef, useState } from 'react';
+import { lazy, Suspense } from 'react';
 import { createBrowserRouter, RouterProvider, Outlet, ScrollRestoration } from 'react-router-dom';
-import { motion } from 'motion/react';
-import { IoIosSunny } from "react-icons/io";
-import { FiMoon } from "react-icons/fi";
 import { Toaster } from 'sonner';
 import useThemeStore from './store/themeStore';
 import useLenis from './hooks/useLenis';
@@ -45,9 +42,7 @@ const TermsAndConditions = lazy(() => import('./layouts/TermsAndConditions'));
 const PrivacyPolicy = lazy(() => import('./layouts/PrivacyPolicy'));
 
 // Shared layout for all routes
-function RootLayout({ theme, setTheme }) {
-  const [draging, setDraging] = useState(false);
-  const constraintRef = useRef();
+function RootLayout({ theme }) {
   const { screenLoader } = useLoaderStore();
 
   useLenis();
@@ -59,20 +54,6 @@ function RootLayout({ theme, setTheme }) {
 
       {/* Full Screen Loader */}
       {screenLoader && <div className='fixed inset-0 z-[500]'><Loader /></div>}
-
-      {/* Theme toggle button */}
-      <section ref={constraintRef} className='w-screen h-screen fixed inset-0 pointer-events-none z-[501]'>
-        <motion.button
-          drag
-          dragConstraints={constraintRef}
-          onDragStart={() => setDraging(true)}
-          onDragEnd={() => setTimeout(() => setDraging(false), 100)}
-          onClick={() => { if (!draging) setTheme(theme === "light" ? "dark" : "light") }}
-          className='text-xl p-2 border border-gray-500 rounded-full bg-white cursor-pointer pointer-events-auto'
-        >
-          {theme === "light" ? <FiMoon /> : <IoIosSunny />}
-        </motion.button>
-      </section>
 
       {/* Toaster */}
       <Toaster position="bottom-right" theme={theme} duration={6000} />
