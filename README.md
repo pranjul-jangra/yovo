@@ -29,6 +29,7 @@ Yovo is a modern social media platform built with a focus on performance, clean 
 
 ## Project Structure
 
+```bash
 yovo-frontend/
 │── src/
 │   ├── components/      # Reusable UI components
@@ -43,3 +44,9 @@ yovo-frontend/
 │── public/              # Static assets
 │── package.json         # Dependencies
 │── vite.config.js       # Vite config
+```
+
+## Backend
+
+This frontend is powered by Yovo backend APIs.
+👉 Frontend repo: [yovo-server](https://github.com/pranjul-jangra/yovo-server)
