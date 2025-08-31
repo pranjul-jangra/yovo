@@ -1,0 +1,17 @@
+/* Signup page */
+.signup-form > div {
+    & > label {
+        transform: translateY(calc(22.5px - 0.75rem));
+        font-size: 0.9rem;
+    }
+
+    /* Fic lable position when input is not empty */
+    & > label.float {
+        transform: translateY(-50%);
+    }
+
+    & > label:has(+ input:focus) {
+        transform: translateY(-50%);
+    }
+}
+
