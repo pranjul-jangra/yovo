@@ -61,7 +61,7 @@ export default function SearchBar() {
                 <FiSearch className={`${grayText} mr-2`} />
                 <input
                     type="text"
-                    placeholder="Search posts, users, or tags..."
+                    placeholder="Search posts, or users..."
                     className="w-full bg-transparent outline-none"
                     value={query}
                     onChange={(e) => { setQuery(e.target.value); setShowAll(false); }}
