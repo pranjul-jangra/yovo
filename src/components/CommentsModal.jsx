@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { motion } from "motion/react";
 import useThemeStyles from "../hooks/useThemeStyles";
 import { IoMdClose } from "react-icons/io";
@@ -20,26 +20,33 @@ const CommentsModal = ({ onClose, postId, setPosts, setPostData, caption = "", t
   const loaderRef = useRef(null);
 
   // Fetch comments
-  const fetchComments = async () => {
-    if (!hasMore) return;
-
+  const fetchComments = useCallback(async () => {
+    if (!hasMore || loading) return;
     setLoading(true);
     try {
       const res = await interceptor.get(`/api/posts/${postId}/comments`, {
         params: { cursor },
       });
 
-      setComments(prev => [...prev, ...res.data.comments]);
-      setCommentsBucket(prev => [...prev, ...new Array(res.data.comments.length).fill(false)]);
+      setComments(prev => {
+        const newOnes = res.data.comments.filter(
+          c => !prev.some(p => p._id === c._id)
+        );
+        return [...prev, ...newOnes];
+      });
+
+      setCommentsBucket(prev => [
+        ...prev,
+        ...new Array(res.data.comments.length).fill(false),
+      ]);
       setHasMore(res.data.hasMore);
       setCursor(res.data.nextCursor);
-
     } catch (error) {
       console.log("Error getting comments:", error);
     } finally {
       setLoading(false);
     }
-  };
+  }, [cursor, hasMore, loading, postId]);
 
   useEffect(() => {
     fetchComments();
@@ -47,14 +54,14 @@ const CommentsModal = ({ onClose, postId, setPosts, setPostData, caption = "", t
 
   // Infinite scroll
   useEffect(() => {
-    if (!hasMore) return;
+    if (!hasMore || loading) return;
 
     const obs = new IntersectionObserver(entries => {
       if (entries[0].isIntersecting) fetchComments();
     });
     if (loaderRef.current) obs.observe(loaderRef.current);
     return () => obs.disconnect();
-  }, [fetchComments, hasMore]);
+  }, [fetchComments, hasMore, loading]);
 
   // Add comment
   const handleAddComment = async () => {
@@ -84,7 +91,7 @@ const CommentsModal = ({ onClose, postId, setPosts, setPostData, caption = "", t
       });
 
       // State update on profile page
-      if(setPostData){
+      if (setPostData) {
         setPostData(prev => ({ ...prev, comments_count: prev.comments_count + 1 }))
       }
 
