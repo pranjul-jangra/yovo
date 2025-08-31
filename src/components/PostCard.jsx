@@ -360,10 +360,10 @@ export default function PostCard({ p, setPosts, setPostData, closeModal, isModal
                                 {parseInt(p?.likes_count ?? 0)}
                             </button>
 
-                            <button type="button" className={`text-[12px] ${grayText} flex items-center gap-1 cursor-pointer`} onClick={() => setPostId(p._id)} >
+                            {!p?.disable_comments && <button type="button" className={`text-[12px] ${grayText} flex items-center gap-1 cursor-pointer`} onClick={() => setPostId(p._id)} >
                                 <FaComment className="text-xl" />{" "}
                                 {parseInt(p?.comments_count ?? 0)}
-                            </button>
+                            </button>}
 
                             <button type="button" className={`text-[12px] ${grayText} flex items-center gap-1 cursor-pointer`} onClick={() => setSharePost(() => ({ state: true, postId: p?.postId }))} >
                                 <FaShare className="text-xl" /> {parseInt(p?.share_count ?? 0)}
