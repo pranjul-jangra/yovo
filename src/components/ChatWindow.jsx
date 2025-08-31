@@ -121,9 +121,18 @@ export default function ChatWindow({ onOpenSettings }) {
       scrollToBottom();
 
       setMessages((prev) => {
-        const filtered = prev.filter(
-          (m) => !(m.__optimistic && m.text === message.text && m.sender._id === myId)
-        );
+        const filtered = prev.filter((m) => {
+          const optimisticSenderId =
+            typeof m.sender === "object" ? m.sender._id : m.sender;
+          const newMsgSenderId =
+            typeof message.sender === "object" ? message.sender._id : message.sender;
+
+          return !(
+            m.__optimistic &&
+            m.text === message.text &&
+            String(optimisticSenderId) === String(newMsgSenderId)
+          );
+        });
         return [...filtered, message];
       });
     };
