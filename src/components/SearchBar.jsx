@@ -90,7 +90,7 @@ export default function SearchBar() {
                             <div className={`w-3 h-3 my-3 rounded-full border-2 border-dotted ${grayText} animate-spin`}></div>
                         )}
 
-                        {(results.posts.length + results.users.length + results.tags.length > 7 && !showAll) && (
+                        {(results?.posts?.length + results?.users?.length + results?.tags?.length > 7 && !showAll) && (
                             <button onClick={handleShowAll} className={`mt-2 text-sm ${blueText}`}>
                                 Show More
                             </button>

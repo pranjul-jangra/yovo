@@ -52,7 +52,7 @@ export default function ChatWindow({ onOpenSettings }) {
   const renderPeer = async () => {
     try {
       const { data } = await interceptor.get(`${API_BASE}/${conversationId}/convo`);
-      const otherUsers = data?.conversation?.participants?.filter(p => String(p._id || p) !== String(myId));
+      const otherUsers = data?.conversation?.participants?.filter(p => String(p?._id || p) !== String(myId));
       setPeer({
         name: data?.conversation?.isGroup ? data?.conversation?.group_name : otherUsers?.[0]?.username,
         avatar: data?.conversation?.isGroup ? data?.conversation?.group_avatar : otherUsers?.[0]?.avatar,
@@ -77,7 +77,7 @@ export default function ChatWindow({ onOpenSettings }) {
       let params = { limit: 20 };
 
       if (!reset && messages.length > 0) {
-        params.before = messages[0]._id;
+        params.before = messages[0]?._id;
       }
 
       const { data } = await interceptor.get(`${API_BASE}/${conversationId}`, { params });
@@ -123,9 +123,9 @@ export default function ChatWindow({ onOpenSettings }) {
       setMessages((prev) => {
         const filtered = prev.filter((m) => {
           const optimisticSenderId =
-            typeof m.sender === "object" ? m.sender._id : m.sender;
+            typeof m.sender === "object" ? m.sender?._id : m?.sender;
           const newMsgSenderId =
-            typeof message.sender === "object" ? message.sender._id : message.sender;
+            typeof message.sender === "object" ? message.sender?._id : message?.sender;
 
           return !(
             m.__optimistic &&
@@ -173,7 +173,7 @@ export default function ChatWindow({ onOpenSettings }) {
   };
 
   const isMine = (msg) => {
-    const senderId = typeof msg.sender === "object" ? msg.sender?._id : msg.sender;
+    const senderId = typeof msg.sender === "object" ? msg.sender?._id : msg?.sender;
     return myId && String(senderId) === String(myId);
   };
 
@@ -213,9 +213,9 @@ export default function ChatWindow({ onOpenSettings }) {
         {messages?.length > 0
           ?
           messages.map((msg) => (
-            <div key={msg._id} className={`my-2 flex ${isMine(msg) ? "justify-end" : "justify-start"}`}>
+            <div key={msg?._id} className={`my-2 flex ${isMine(msg) ? "justify-end" : "justify-start"}`}>
               <div className={`px-4 py-2 rounded-2xl max-w-[70%] ${isMine(msg) ? "bg-blue-500 text-white" : tagsBg}`}>
-                {msg.text}
+                {msg?.text}
               </div>
             </div>
           ))

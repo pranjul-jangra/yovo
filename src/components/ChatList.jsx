@@ -23,7 +23,7 @@ export default function ChatList({ setShowSettings }) {
   const onSelectChat = (convo) => {
     if (!convo._id) return;
     setShowSettings(false);
-    navigate(`/messages/${convo._id}`);
+    navigate(`/messages/${convo?._id}`);
   };
 
   // Load conversations
@@ -67,8 +67,8 @@ export default function ChatList({ setShowSettings }) {
           };
           c.updatedAt = message.createdAt;
 
-          const senderId = typeof message.sender === "object" ? message.sender._id : message.sender;
-          const isOpen = conversationId === c._id;
+          const senderId = typeof message.sender === "object" ? message.sender?._id : message?.sender;
+          const isOpen = conversationId === c?._id;
 
           // New message from another user when chat window is close
           if (!isOpen && senderId !== myId) {
@@ -102,7 +102,7 @@ export default function ChatList({ setShowSettings }) {
   // Mark as read when selected
   useEffect(() => {
     if (!conversationId) return;
-    setChats(prev => prev.map(c => c._id === conversationId ? { ...c, unreadCount: 0 } : c));
+    setChats(prev => prev.map(c => c?._id === conversationId ? { ...c, unreadCount: 0 } : c));
   }, [conversationId]);
 
   // Helper: determine display name + avatar
@@ -110,7 +110,7 @@ export default function ChatList({ setShowSettings }) {
     if (c.isGroup) return { name: c.group_name || "Group", avatar: c.group_avatar || "/group-avatar.png" };
 
     const others = (c.participants || []).filter(p => {
-      const id = typeof p === "object" ? p._id : p;
+      const id = typeof p === "object" ? p?._id : p;
       // Neglact my own id
       return String(id) !== String(myId);
     });

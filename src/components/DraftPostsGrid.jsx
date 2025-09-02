@@ -77,7 +77,7 @@ export default function DraftPostsGrid() {
         setScreenLoader(true);
         try {
             await interceptor.patch(`/api/posts/${postId}/publish`);
-            setDrafts((prev) => prev.filter((p) => p.postId !== postId));
+            setDrafts((prev) => prev.filter((p) => p?.postId !== postId));
         } catch (err) {
             console.error("Error publishing draft:", err);
         } finally{
@@ -90,7 +90,7 @@ export default function DraftPostsGrid() {
         setScreenLoader(true);
         try {
             await interceptor.delete(`/api/posts/${postId}`);
-            setDrafts((prev) => prev.filter(p => p._id !== postId));
+            setDrafts((prev) => prev.filter(p => p?._id !== postId));
         } catch (err) {
             console.error("Error deleting draft:", err);
         } finally{
@@ -108,16 +108,16 @@ export default function DraftPostsGrid() {
         <main>
             <section className="w-full p-4 mt-4 pb-10">
                 {loading && <p className="text-center">Loading drafts...</p>}
-                {!loading && drafts.length === 0 && <p className={`${grayText} text-sm text-center`}>No drafts saved.</p>}
+                {!loading && drafts?.length === 0 && <p className={`${grayText} text-sm text-center`}>No drafts saved.</p>}
 
                 {/* Draft posts */}
                 <section className="grid grid-cols-3 gap-3 max-w-4xl mx-auto">
-                    {drafts.map((draft) => (
-                        <div key={draft.postId} className={`rounded-2xl p-2 border ${border} shadow-sm flex flex-col`}>
+                    {drafts?.map((draft) => (
+                        <div key={draft?.postId} className={`rounded-2xl p-2 border ${border} shadow-sm flex flex-col`}>
                             {/* Media preview */}
                             {draft?.images?.length > 0 ?
                                 <img src={draft?.images[0]} alt="draft preview" className="w-full h-44 object-cover rounded-xl" />
-                                : draft.video ?
+                                : draft?.video ?
                                     <video controls src={draft?.video} className="w-full max-h-64 rounded-xl" />
                                     :
                                     <p className={`h-40 flex items-center justify-center ${grayText} border rounded-xl`}> No media</p>
@@ -127,7 +127,7 @@ export default function DraftPostsGrid() {
                             <p className="mt-2 text-sm truncate">{draft?.caption?.slice(0, 50) || "No caption"}</p>
 
                             {/* Tags */}
-                            {draft.tags?.length > 0 && (
+                            {draft?.tags?.length > 0 && (
                                 <p className={`text-xs ${grayText} mt-1`}>Tags: {draft?.tags?.join(", ")} </p>
                             )}
 
@@ -150,7 +150,7 @@ export default function DraftPostsGrid() {
                 {/* Infinite scroll loader */}
                 <div ref={loaderRef} className="h-10 flex items-center justify-center mt-4">
                     {loadingMore && <p className="text-center">Loading more drafts...</p>}
-                    {!hasMore && !loading && !loadingMore && drafts.length > 0 && (
+                    {!hasMore && !loading && !loadingMore && drafts?.length > 0 && (
                         <p className={`text-sm ${grayText} text-center mt-6`}>No more drafts</p>
                     )}
                 </div>

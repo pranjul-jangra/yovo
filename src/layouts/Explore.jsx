@@ -126,7 +126,7 @@ export default function ExplorePage() {
                     }}
                 >
                     {users.map(user => (
-                        <div key={user._id}>
+                        <div key={user?._id}>
                             <UserCard user={user} />
                         </div>
                     ))}
@@ -143,7 +143,7 @@ export default function ExplorePage() {
                 {loading && <div className={`w-6 h-6 mx-auto mt-4 border-2 rounded-full animate-spin ${grayText}`}></div>}
 
                 {/* Empty feed indicator */}
-                {users.length === 0 && posts.length === 0 && !loading && (
+                {users?.length === 0 && posts?.length === 0 && !loading && (
                     <div className={`text-center text-sm mt-10 ${grayText}`}>Feed is empty.</div>
                 )}
             </div>

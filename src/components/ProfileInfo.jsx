@@ -71,7 +71,7 @@ export default function ProfileInfo() {
         try{
             const res = await interceptor.post('/api/chat/conversation', { userId });
             const { conversation } = res.data;
-            navigate(`/messages/${conversation._id}`);
+            navigate(`/messages/${conversation?._id}`);
 
         }catch(error){
             console.log("Error creating conversation:", error);
@@ -122,12 +122,12 @@ export default function ProfileInfo() {
                             rel="noopener noreferrer"
                             className={`text-sm flex gap-2 items-center mt-2 ${grayText} hover:text-blue-500 transition`}
                         >
-                            <FaLink /> <span className="pb-1">{profile_website?.website.replace(/^https?:\/\//, '')}</span>
+                            <FaLink /> <span className="pb-1">{profile_website?.website?.replace(/^https?:\/\//, '')}</span>
                         </a>
                     )}
 
                     {/* Social Media Icons */}
-                    {social_links.length > 0 && (
+                    {social_links?.length > 0 && (
                         <div className="flex gap-4 mt-2">
                             {social_links.map(({ platform, link }) => (
                                 <a
@@ -163,7 +163,7 @@ export default function ProfileInfo() {
             </section>
 
             {/* Action Buttons */}
-            {(userId !== "me" && user._id !== otherUser._id) && <section className="flex justify-center items-center gap-16 max-sm:gap-12 mt-8 *:w-32 *:py-2 *:rounded-full *:cursor-pointer">
+            {(userId !== "me" && user?._id !== otherUser?._id) && <section className="flex justify-center items-center gap-16 max-sm:gap-12 mt-8 *:w-32 *:py-2 *:rounded-full *:cursor-pointer">
                 <button
                     type='button'
                     onClick={handleFollow}

@@ -6,7 +6,7 @@ export default function UserCard({ user }) {
     const navigate = useNavigate();
 
     const handleClick = () => {
-        navigate(`/profile/${user._id}`);
+        navigate(`/profile/${user?._id}`);
     };
 
     return (

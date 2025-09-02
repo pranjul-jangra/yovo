@@ -36,9 +36,9 @@ export default function TrendingSection({ posts = [], setPosts, fetchMorePosts, 
     return (
         <>
             <section className="grid grid-cols-3 gap-4 max-md:gap-1 md:grid-cols-4">
-                {posts?.map(post => post.video
+                {posts?.map(post => post?.video
                     ?
-                    <div key={post._id} className={`relative border ${border}`} onClick={() => setPostData(post)}>
+                    <div key={post?._id} className={`relative border ${border}`} onClick={() => setPostData(post)}>
                         <video src={post.video} mute className="w-full h-full shrink-0 rounded-xl object-cover cursor-pointer" />
                         <FaVideo className="absolute text-xl top-2 right-2 bg-black/60 text-white p-1 rounded-md" />
                     </div>
