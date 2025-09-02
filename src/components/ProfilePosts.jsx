@@ -11,9 +11,7 @@ export default function ProfilePosts({ userId = "me" }) {
 
     return (
         <>
-            <section
-                className={`w-full flex justify-center mt-6 border-t py-3 ${border} *:flex *:items-center *:gap-1.5 *:cursor-pointer`}
-            >
+            <section className={`w-full flex justify-center mt-6 border-t py-3 ${border} *:flex *:items-center *:gap-1.5 *:cursor-pointer`}>
                 <button type="button" onClick={() => setActiveTab("posts")} className={`${activeTab !== "posts" ? grayText : ""} px-6 border-x ${border}`}>
                     <BsFilePost /> Posts
                 </button>

@@ -226,7 +226,7 @@ export default function PostCard({ p, setPosts, setPostData, closeModal, isModal
 
     return (
         <>
-            <section className={`w-full flex flex-col ${isModal ? "h-[95vh] max-h-screen max-w-[95%] md:max-w-[850px]" : "max-w-2xl"} border ${border} ${bgColor} p-3 rounded-2xl relative`} onClick={e => e.stopPropagation()}>
+            <section className={`w-full flex flex-col ${isModal ? "h-[90vh] max-h-screen max-w-[95%] md:max-w-[850px]" : "max-w-2xl"} border ${border} ${bgColor} p-3 rounded-2xl relative`} onClick={e => e.stopPropagation()}>
                 {/* Header */}
                 <section className="flex justify-between items-center gap-5 mb-2.5 relative flex-shrink-0">
                     <div className="flex gap-3 items-center cursor-default" onClick={() => navigate(`/profile/${p.user ? p.user?.[0]?._id : p?.userId?._id}`)} >
@@ -301,7 +301,7 @@ export default function PostCard({ p, setPosts, setPostData, closeModal, isModal
                 {/* Main content */}
                 <section className={`flex-1 w-full overflow-hidden ${isModal ? "grid grid-cols-1 md:grid-cols-2 gap-4" : "flex flex-col"}`}>
                     {/* Left: Media */}
-                    <div className={`flex overflow-hidden image-container w-full ${isModal ? "h-64 md:h-full" : "aspect-square"} rounded-lg relative`} onScroll={updateIndex} >
+                    <div className={`flex overflow-hidden image-container w-full ${isModal ? "h-72 md:h-full" : "aspect-square"} rounded-lg relative`} onScroll={updateIndex} >
                         <div className="flex w-full h-full overflow-x-auto image-container" onScroll={updateIndex}>
                             {p?.video
                                 ?

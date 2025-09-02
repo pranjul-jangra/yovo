@@ -70,7 +70,7 @@ export default function PostGrid({ userId = "me", type = "posts" }) {
 
     return (
         <>
-            <section className="mt-8 grid grid-cols-3 gap-1 md:gap-3 max-w-4xl mx-auto">
+            <section className="mt-8 grid grid-cols-3 gap-1 md:gap-3 max-md:pb-12 pb-4 max-w-4xl mx-auto">
                 {posts?.length > 0 ? (
                     posts.map((post, i) => (
                         <div key={`post-${i}`} onClick={() => setPostData(post)} className="relative group h-44">
@@ -95,7 +95,7 @@ export default function PostGrid({ userId = "me", type = "posts" }) {
                     </p>
                 )}
 
-                {/* LOader */}
+                {/* Laader */}
                 {loading &&
                     <div ref={loaderRef} className="col-span-3 flex justify-center my-4">
                         <div className="w-6 h-6 border-2 border-gray-400 border-t-transparent rounded-full animate-spin"></div>
