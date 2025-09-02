@@ -29,7 +29,7 @@ export default function MessagesPage() {
     }
   };
   useEffect(() => {
-    if (!user._id || !user.username || !user.email) fetchMyProfile();
+    if (!user?._id || !user?.username || !user?.email) fetchMyProfile();
   }, []);
 
   // Connect socket and register user

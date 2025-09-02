@@ -17,5 +17,5 @@ export function timeAgo(date) {
   if (months < 12) return `${months}mo ago`;
 
   const years = Math.floor(months / 12);
-  return `${years}y ago`;
+  return years ? `${years}y ago` : "";
 }

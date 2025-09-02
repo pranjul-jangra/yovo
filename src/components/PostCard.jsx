@@ -78,7 +78,7 @@ export default function PostCard({ p, setPosts, setPostData, closeModal, isModal
     const handleShare = async (platformUrl) => {
         try {
             window.open(platformUrl, "_blank");
-            await interceptor.post(`/api/posts/${p.postId}/share`);
+            await interceptor.post(`/api/posts/${p?.postId}/share`);
         } catch (err) {
             console.error("Error sharing post:", err);
         }
@@ -92,13 +92,13 @@ export default function PostCard({ p, setPosts, setPostData, closeModal, isModal
     // hide post
     const hidePost = async () => {
         try {
-            await interceptor.post(`/api/post-action/hide/${p._id}`);
+            await interceptor.post(`/api/post-action/hide/${p?._id}`);
             setShowMenu(false);
             toast.success("Your post is hidden now.");
 
             if (setPosts) {
-                setPosts(prev => prev.map(post => post._id === p._id
-                    ? { ...post, hide_post: !post.hide_post }
+                setPosts(prev => prev.map(post => post?._id === p?._id
+                    ? { ...post, hide_post: !post?.hide_post }
                     : post
                 ));
             }
@@ -111,13 +111,13 @@ export default function PostCard({ p, setPosts, setPostData, closeModal, isModal
     // Unhide post
     const UnhidePost = async () => {
         try {
-            await interceptor.post(`/api/post-action/unhide/${p._id}`);
+            await interceptor.post(`/api/post-action/unhide/${p?._id}`);
             setShowMenu(false);
             toast.success("Your post is accessible now.");
 
             if (setPosts) {
-                setPosts(prev => prev.map(post => post._id === p._id
-                    ? { ...post, hide_post: !post.hide_post }
+                setPosts(prev => prev.map(post => post?._id === p?._id
+                    ? { ...post, hide_post: !post?.hide_post }
                     : post
                 ));
             }
@@ -139,7 +139,7 @@ export default function PostCard({ p, setPosts, setPostData, closeModal, isModal
                 closeModal();
             }
             if (setPosts) {
-                setPosts(prev => prev.filter(post => post._id !== id));
+                setPosts(prev => prev.filter(post => post?._id !== id));
             }
 
         } catch (error) {
@@ -157,32 +157,32 @@ export default function PostCard({ p, setPosts, setPostData, closeModal, isModal
     // Toggle like
     const handleLike = async () => {
         try {
-            await interceptor.post(`/api/posts/${p._id}/like`);
+            await interceptor.post(`/api/posts/${p?._id}/like`);
             if (p.isLiked) {
                 setPosts(prev => {
                     return Array.isArray(prev) ?
                         prev?.map(post => {
-                            return post._id === p._id ? { ...post, isLiked: false, likes_count: post.likes_count - 1 } : post
+                            return post?._id === p?._id ? { ...post, isLiked: false, likes_count: post?.likes_count - 1 } : post
                         }) :
-                        { ...prev, isLiked: false, likes_count: prev.likes_count - 1 }
+                        { ...prev, isLiked: false, likes_count: prev?.likes_count - 1 }
                 });
 
                 // State update on profile page
                 if (setPostData) {
-                    setPostData(prev => ({ ...prev, isLiked: false, likes_count: prev.likes_count - 1 }))
+                    setPostData(prev => ({ ...prev, isLiked: false, likes_count: prev?.likes_count - 1 }))
                 }
             } else {
                 setPosts(prev => {
                     return Array.isArray(prev)
                         ? prev.map(post => {
-                            return post._id === p._id ? { ...post, isLiked: true, likes_count: post.likes_count + 1 } : post
+                            return post?._id === p?._id ? { ...post, isLiked: true, likes_count: post?.likes_count + 1 } : post
                         })
-                        : { ...prev, isLiked: true, likes_count: prev.likes_count + 1 };
+                        : { ...prev, isLiked: true, likes_count: prev?.likes_count + 1 };
                 });
 
                 // State update on profile page
                 if (setPostData) {
-                    setPostData(prev => ({ ...prev, isLiked: true, likes_count: prev.likes_count + 1 }))
+                    setPostData(prev => ({ ...prev, isLiked: true, likes_count: prev?.likes_count + 1 }))
                 }
             }
 
@@ -230,24 +230,29 @@ export default function PostCard({ p, setPosts, setPostData, closeModal, isModal
                 {/* Header */}
                 <section className="flex justify-between items-center gap-5 mb-2.5 relative flex-shrink-0">
                     <div className="flex gap-3 items-center cursor-default" onClick={() => navigate(`/profile/${p.user ? p.user?.[0]?._id : p?.userId?._id}`)} >
-                        <img src={p?.user ? p?.user?.[0]?.avatar : p?.userId?.avatar} alt="" className="w-8 aspect-square object-cover rounded-lg" />
+                        <img loading="lazy" src={p?.user ? p?.user?.[0]?.avatar : p?.userId?.avatar} alt="avatar" className="w-8 aspect-square object-cover rounded-lg text-xs" />
                         <div>
                             <p className="whitespace-nowrap truncate leading-4 text-sm">
-                                {p?.user
-                                    ? p?.user?.[0]?.profile_name || p?.user?.[0]?.username
-                                    : p?.userId?.profile_name || p?.userId?.username}
+                                {
+                                    p?.user
+                                        ? p?.user?.[0]?.profile_name || p?.user?.[0]?.username || "yovo_user"
+                                        : p?.userId?.profile_name || p?.userId?.username || "yovo_user"
+                                }
                             </p>
                             <p className={`${grayText} text-[0.8rem]`}>{timeAgo(p?.createdAt)}</p>
                         </div>
 
                         {/* Follow button */}
-                        {!isOwner &&
+                        {
+                            !isOwner &&
                             !p?.isFollowing &&
+                            p?.user?.[0]?.username &&
                             !location.pathname?.includes("/profile") && (
                                 <button className={`${p?.isFollowing ? grayButtonBg : blueButtonBg} px-3 pt-0.5 pb-1 rounded-md text-sm`} type="button" onClick={e => { e.stopPropagation(); handleFollow(); }}>
                                     {p?.isFollowing ? "Following" : "Follow"}
                                 </button>
-                            )}
+                            )
+                        }
                     </div>
 
                     <div className="relative" ref={menuRef}>
@@ -267,7 +272,7 @@ export default function PostCard({ p, setPosts, setPostData, closeModal, isModal
                                             <li className={`px-4 py-1.5 ${hoverBg} cursor-pointer`} onClick={handleEditPost}>
                                                 Edit
                                             </li>
-                                            <li className={`px-4 py-1.5 ${hoverBg} cursor-pointer`} onClick={() => handleDeletePost(p._id)}>
+                                            <li className={`px-4 py-1.5 ${hoverBg} cursor-pointer`} onClick={() => handleDeletePost(p?._id)}>
                                                 Delete
                                             </li>
                                             <li className={`px-4 py-1.5 ${hoverBg} cursor-pointer`} onClick={p?.hide_post ? UnhidePost : hidePost}>
@@ -298,18 +303,19 @@ export default function PostCard({ p, setPosts, setPostData, closeModal, isModal
                     {/* Left: Media */}
                     <div className={`flex overflow-hidden image-container w-full ${isModal ? "h-64 md:h-full" : "aspect-square"} rounded-lg relative`} onScroll={updateIndex} >
                         <div className="flex w-full h-full overflow-x-auto image-container" onScroll={updateIndex}>
-                            {p?.video ? (
+                            {p?.video
+                                ?
                                 <div className="w-full h-full flex-shrink-0 relative">
                                     <video src={p.video} className="w-full h-full object-cover" ref={videoRef} />
                                     <div onClick={togglePlay} className={`absolute inset-0 z-10 flex justify-center items-center ${playing ? "" : "bg-black/20"}`}>
                                         {!playing && <BsPlayCircle className="text-4xl" />}
                                     </div>
                                 </div>
-                            ) : (
+                                :
                                 p?.images?.map((image, i) => (
-                                    <img key={`image-${i}`} src={image} alt="" className="w-full h-full flex-shrink-0 object-cover" />
+                                    <img loading="lazy" key={`image-${i}`} src={image} alt={`image-${i + 1}`} className="w-full h-full flex-shrink-0 object-cover" />
                                 ))
-                            )}
+                            }
                         </div>
 
                         {p?.images?.length > 0 && (
@@ -360,7 +366,7 @@ export default function PostCard({ p, setPosts, setPostData, closeModal, isModal
                                 {parseInt(p?.likes_count ?? 0)}
                             </button>
 
-                            {!p?.disable_comments && <button type="button" className={`text-[12px] ${grayText} flex items-center gap-1 cursor-pointer`} onClick={() => setPostId(p._id)} >
+                            {!p?.disable_comments && <button type="button" className={`text-[12px] ${grayText} flex items-center gap-1 cursor-pointer`} onClick={() => setPostId(p?._id)} >
                                 <FaComment className="text-xl" />{" "}
                                 {parseInt(p?.comments_count ?? 0)}
                             </button>}

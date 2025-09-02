@@ -53,7 +53,7 @@ function RootLayout({ theme }) {
       <ScrollRestoration />
 
       {/* Full Screen Loader */}
-      {screenLoader && <div className='fixed inset-0 z-[500]'><Loader /></div>}
+      {screenLoader && <div className='fixed inset-0 z-[1200]'><Loader /></div>}
 
       {/* Toaster */}
       <Toaster position="bottom-right" theme={theme} duration={6000} />

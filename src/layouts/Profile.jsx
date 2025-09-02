@@ -40,7 +40,7 @@ export default function Profile() {
   }, []);
 
   // Condition to fetch user data
-  const shouldFetch = !user || Object.keys(user).length === 0 || !user.username || !user.email || !user._id;
+  const shouldFetch = !user || Object.keys(user)?.length === 0 || !user?.username || !user?.email || !user?._id;
 
   // Fetch user data 
   const fetchProfile = async () => {
@@ -61,7 +61,7 @@ export default function Profile() {
 
   // Report user
   const handleReport = () => {
-    const targetId = userId === "me" ? user._id : otherUser._id;
+    const targetId = userId === "me" ? user?._id : otherUser?._id;
     navigate('/report', { state: { reportType: "user", targetId } })
   };
 
@@ -80,10 +80,10 @@ export default function Profile() {
               <h2 className="font-semibold tracking-wide">{userId === "me" ? user?.username : otherUser?.username}</h2>
 
               <div className="flex gap-4 items-center">
-                {(userId === "me" || user._id === otherUser._id) && <Link to='/profile/me/edit-profile' className={`border ${border} px-2 py-2 rounded-full cursor-pointer transition-colors duration-200`}><RiBallPenLine /></Link>}
-                {(userId === "me" || user._id === otherUser._id) && <Link to={'/home/create'} aria-label="Create post" className={`border ${border} px-2 py-2 rounded-full cursor-pointer transition-colors duration-200`}><IoMdAdd /></Link>}
+                {(userId === "me" || user?._id === otherUser?._id) && <Link to='/profile/me/edit-profile' className={`border ${border} px-2 py-2 rounded-full cursor-pointer transition-colors duration-200`}><RiBallPenLine /></Link>}
+                {(userId === "me" || user?._id === otherUser?._id) && <Link to={'/home/create'} aria-label="Create post" className={`border ${border} px-2 py-2 rounded-full cursor-pointer transition-colors duration-200`}><IoMdAdd /></Link>}
 
-                {(userId !== "me" && user._id !== otherUser._id) && <div className="relative" ref={menuRef}>
+                {(userId !== "me" && user?._id !== otherUser?._id) && <div className="relative" ref={menuRef}>
                   <IoEllipsisVertical className="cursor-pointer" onClick={() => setShowMenu(prev => !prev)} />
 
                   <AnimatePresence>

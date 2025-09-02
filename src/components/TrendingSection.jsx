@@ -43,7 +43,7 @@ export default function TrendingSection({ posts = [], setPosts, fetchMorePosts, 
                         <FaVideo className="absolute text-xl top-2 right-2 bg-black/60 text-white p-1 rounded-md" />
                     </div>
                     :
-                    <img key={post._id} onClick={() => setPostData(post)} src={post?.images?.[0]} alt="" className={`w-full h-full shrink-0 rounded-xl object-cover cursor-pointer border ${border}`} />
+                    <img key={post?._id} onClick={() => setPostData(post)} src={post?.images?.[0]} alt="" className={`w-full h-full shrink-0 rounded-xl object-cover cursor-pointer border ${border}`} />
                 )}
 
                 {/* Invisible sentinel for pagination (no UI change) */}

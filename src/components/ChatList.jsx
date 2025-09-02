@@ -17,6 +17,7 @@ export default function ChatList({ setShowSettings }) {
 
   const [chats, setChats] = useState([]);
   const [onlineIds, setOnlineIds] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   // When a conversation is selected from ChatList
   const onSelectChat = (convo) => {
@@ -29,10 +30,13 @@ export default function ChatList({ setShowSettings }) {
   useEffect(() => {
     (async () => {
       try {
+        setLoading(true);
         const { data } = await interceptor.get(`${API_BASE}/`);
         setChats(data?.conversations || []);
       } catch (e) {
         console.error("Failed to load conversations", e);
+      } finally {
+        setLoading(false);
       }
     })();
   }, []);
@@ -51,7 +55,7 @@ export default function ChatList({ setShowSettings }) {
     const onNewMessage = (message) => {
       setChats(prev => {
         const copy = [...prev];
-        const idx = copy.findIndex(c => String(c._id) === String(message.conversationId?._id || message.conversationId));
+        const idx = copy.findIndex(c => String(c?._id) === String(message.conversationId?._id || message.conversationId));
 
         if (idx >= 0) {
           const c = { ...copy[idx] };
@@ -143,7 +147,7 @@ export default function ChatList({ setShowSettings }) {
             const unread = chat.unreadCount || 0;
             const isOnline = (!chat.isGroup &&
               (onlineIds || []).some(id => {
-                const others = (chat.participants || []).filter(p => String(p._id || p) !== String(myId)); // Neglact my id
+                const others = (chat.participants || []).filter(p => String(p?._id || p) !== String(myId)); // Neglact my id
                 const otherId = others[0]?._id || others[0];
                 return String(id) === String(otherId);
               })
@@ -152,16 +156,16 @@ export default function ChatList({ setShowSettings }) {
             // Conversation card
             return (
               <div
-                key={chat._id}
+                key={chat?._id}
                 onClick={() => onSelectChat(chat)}
-                className={`cursor-pointer px-4 py-3 border-b ${border} ${conversationId === chat._id ? selectedContainerBg : hoverBg}`}
+                className={`cursor-pointer px-4 py-3 border-b ${border} ${conversationId === chat?._id ? selectedContainerBg : hoverBg}`}
               >
                 <div className="flex items-center gap-3">
                   {/* Avatar + online marker */}
                   <div className="relative">
                     <img src={avatar || "/user.png"} alt={name} className="w-8 h-8 rounded-full object-cover" />
-                    
-                    {!chat.isGroup && isOnline && (
+
+                    {!chat?.isGroup && isOnline && (
                       <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 rounded-full ring-2 ring-white" />
                     )}
                   </div>
@@ -183,10 +187,14 @@ export default function ChatList({ setShowSettings }) {
             );
           })
           :
-          <div className="flex flex-col items-center justify-center h-40 text-center px-4">
-            <LuMessageSquareOff className="w-20 h-20 opacity-40" />
-            <p className={`${grayText} mt-2`}>No conversations yet</p>
-          </div>
+          loading
+            ?
+            <div className={`w-8 h-8 mx-auto rounded-full border-2 border-dotted ${border} animate-spin`}></div>
+            :
+            <div className="flex flex-col items-center justify-center h-40 text-center px-4">
+              <LuMessageSquareOff className="w-20 h-20 opacity-40" />
+              <p className={`${grayText} mt-2`}>No conversations yet</p>
+            </div>
         }
       </div>
     </section>
